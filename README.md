@@ -149,7 +149,7 @@ CCDATSCL_PROJECT_COM222/
 └── README.md                        # This file
 ```
 
-## 📊 Data Format
+## Data Format
 
 The input data (`pullup_logs.csv`) should contain the following columns:
 

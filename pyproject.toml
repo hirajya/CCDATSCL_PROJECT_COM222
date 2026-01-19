@@ -1,0 +1,15 @@
+[project]
+name = "ccdatscl-project-com222"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "marimo>=0.19.4",
+    "matplotlib>=3.10.8",
+    "numpy>=2.4.1",
+    "pandas>=2.3.3",
+    "scikit-learn>=1.8.0",
+    "scipy>=1.17.0",
+    "seaborn>=0.13.2",
+]

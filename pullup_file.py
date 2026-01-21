@@ -24,7 +24,7 @@ def _():
 @app.cell
 def _(mo):
     mo.md("""
-    # Pull-Up Training Analysis Dashboard
+    # Pull-Up Training Analysis
     """)
     return
 
@@ -96,7 +96,7 @@ def _(df_cleaned):
 def _(mo):
     mo.md("""
     ---
-    # 🎯 Research Question 1: Does Daily Dead-Hang Training Improve Pull-Up Performance?
+    # Research Question 1: Does Daily Dead-Hang Training Improve Pull-Up Performance?
 
     **H₀:** Daily dead-hang training does NOT result in statistically significant improvement in pull-up performance.
 
@@ -167,17 +167,17 @@ def _(mo, q1_results):
     - **P-value (pull-up trend):** {q1_results['p_value_pullup']:.4f}
 
     ### Conclusion
-    {"✅ **REJECT NULL HYPOTHESIS** - Dead-hang training shows statistically significant improvement in pull-up performance (p < 0.05)" if q1_results['p_value_corr'] < 0.05 and q1_results['correlation'] > 0 else "❌ **FAIL TO REJECT NULL HYPOTHESIS** - No statistically significant evidence of improvement"}
+    {" **REJECT NULL HYPOTHESIS** - Dead-hang training shows statistically significant improvement in pull-up performance (p < 0.05)" if q1_results['p_value_corr'] < 0.05 and q1_results['correlation'] > 0 else "❌ **FAIL TO REJECT NULL HYPOTHESIS** - No statistically significant evidence of improvement"}
     """)
     return
 
 
 @app.cell
-def _(df_cleaned, plt, sns, np, intercept, slope, intercept_pullup, slope_pullup):
+def _(df_cleaned, intercept, intercept_pullup, np, plt, slope, slope_pullup):
     # Visualization for Q1
     def create_q1_visualizations():
         fig1, axes1 = plt.subplots(2, 2, figsize=(15, 12))
-        
+
         # 1. Dead Hang Progress Over Time
         ax1 = axes1[0, 0]
         ax1.plot(df_cleaned['Date'], df_cleaned['Average Dead  Hang (secs)'], 
@@ -192,7 +192,7 @@ def _(df_cleaned, plt, sns, np, intercept, slope, intercept_pullup, slope_pullup
         ax1.legend()
         ax1.grid(True, alpha=0.3)
         ax1.tick_params(axis='x', rotation=45)
-        
+
         # 2. Pull-Ups Progress Over Time
         ax2 = axes1[0, 1]
         ax2.plot(df_cleaned['Date'], df_cleaned['Maximum  Pull-Ups'], 
@@ -210,7 +210,7 @@ def _(df_cleaned, plt, sns, np, intercept, slope, intercept_pullup, slope_pullup
         ax2.legend()
         ax2.grid(True, alpha=0.3)
         ax2.tick_params(axis='x', rotation=45)
-        
+
         # 3. Correlation Scatter Plot
         ax3 = axes1[1, 0]
         scatter = ax3.scatter(df_cleaned['Average Dead  Hang (secs)'], 
@@ -229,7 +229,7 @@ def _(df_cleaned, plt, sns, np, intercept, slope, intercept_pullup, slope_pullup
         ax3.legend()
         ax3.grid(True, alpha=0.3)
         plt.colorbar(scatter, ax=ax3, label='Day Number')
-        
+
         # 4. Weekly Rolling Average
         ax4 = axes1[1, 1]
         df_cleaned['Dead_Hang_MA7'] = df_cleaned['Average Dead  Hang (secs)'].rolling(window=7, min_periods=1).mean()
@@ -243,20 +243,20 @@ def _(df_cleaned, plt, sns, np, intercept, slope, intercept_pullup, slope_pullup
         ax4.legend()
         ax4.grid(True, alpha=0.3)
         ax4.tick_params(axis='x', rotation=45)
-        
+
         plt.tight_layout()
         return fig1
-    
+
     fig1 = create_q1_visualizations()
     fig1
-    return fig1,
+    return
 
 
 @app.cell
 def _(mo):
     mo.md("""
     ---
-    # 💪 Research Question 2: Body Composition & Performance
+    # Research Question 2: Body Composition & Performance
 
     **H₀:** Changes in body composition or muscle size are NOT significantly associated with improvements in pull-up performance.
 
@@ -344,7 +344,7 @@ def _(corr_df, mo):
     mo.md(f"""
     ### Conclusion
 
-    {"✅ **REJECT NULL HYPOTHESIS**" if len(significant_correlations) > 0 else "❌ **FAIL TO REJECT NULL HYPOTHESIS**"}
+    {"**REJECT NULL HYPOTHESIS**" if len(significant_correlations) > 0 else " **FAIL TO REJECT NULL HYPOTHESIS**"}
 
     {f"Found {len(significant_correlations)} body metric(s) with statistically significant correlation to pull-up performance (p < 0.05):" if len(significant_correlations) > 0 else "No statistically significant associations found between body composition changes and pull-up performance."}
 
@@ -359,13 +359,13 @@ def _(body_metrics, df_cleaned, plt):
     def create_q2_visualizations():
         fig2, axes2 = plt.subplots(2, 3, figsize=(18, 12))
         axes2 = axes2.flatten()
-        
+
         colors = ['#E63946', '#F4A261', '#2A9D8F', '#264653', '#E76F51', '#8338EC']
-        
+
         for idx, metric in enumerate(body_metrics):
             ax = axes2[idx]
             ax2_twin = ax.twinx()
-            
+
             # Plot body metric on left axis
             line1 = ax.plot(df_cleaned['Date'], df_cleaned[metric], 
                            marker='o', linewidth=2, markersize=5, 
@@ -375,33 +375,33 @@ def _(body_metrics, df_cleaned, plt):
             ax.tick_params(axis='y', labelcolor=colors[idx])
             ax.tick_params(axis='x', rotation=45)
             ax.grid(True, alpha=0.3)
-            
+
             # Plot pull-ups on right axis
             line2 = ax2_twin.plot(df_cleaned['Date'], df_cleaned['Maximum  Pull-Ups'], 
                                  marker='s', linewidth=2, markersize=5, 
                                  color='black', alpha=0.5, label='Pull-Ups')
             ax2_twin.set_ylabel('Maximum Pull-Ups', fontsize=10)
-            
+
             # Combine legends
             lines = line1 + line2
             labels = [l.get_label() for l in lines]
             ax.legend(lines, labels, loc='upper left', fontsize=8)
-            
+
             ax.set_title(f'{metric.replace("  ", " ")} vs Pull-Ups', fontsize=11, fontweight='bold')
-        
+
         plt.tight_layout()
         return fig2
-    
+
     fig2 = create_q2_visualizations()
     fig2
-    return fig2,
+    return
 
 
 @app.cell
 def _(mo):
     mo.md("""
     ---
-    # 📈 Additional Insights
+    #  Additional Insights
     """)
     return
 
@@ -411,7 +411,7 @@ def _(df_cleaned, np, plt, sns):
     # Additional visualizations
     def create_additional_insights():
         fig3, axes3 = plt.subplots(2, 2, figsize=(15, 12))
-        
+
         # 1. Heatmap of correlations
         ax_heat = axes3[0, 0]
         correlation_matrix = df_cleaned[[
@@ -425,13 +425,13 @@ def _(df_cleaned, np, plt, sns):
             'Weight (kg)',
             'Perceived  Difficulty (1-10)'
         ]].corr()
-        
+
         sns.heatmap(correlation_matrix, annot=True, fmt='.2f', cmap='coolwarm', 
                     center=0, square=True, ax=ax_heat, cbar_kws={'label': 'Correlation'})
         ax_heat.set_title('Correlation Matrix of All Metrics', fontsize=12, fontweight='bold')
         plt.setp(ax_heat.get_xticklabels(), rotation=45, ha='right', fontsize=8)
         plt.setp(ax_heat.get_yticklabels(), rotation=0, fontsize=8)
-        
+
         # 2. Perceived Difficulty vs Performance
         ax_diff = axes3[0, 1]
         scatter_diff = ax_diff.scatter(df_cleaned['Average Dead  Hang (secs)'], 
@@ -443,7 +443,7 @@ def _(df_cleaned, np, plt, sns):
         ax_diff.set_title('Perceived Difficulty vs Performance', fontsize=12, fontweight='bold')
         ax_diff.grid(True, alpha=0.3)
         plt.colorbar(scatter_diff, ax=ax_diff, label='Pull-Ups')
-        
+
         # 3. Distribution of Dead Hang Times
         ax_dist = axes3[1, 0]
         ax_dist.hist(df_cleaned['Average Dead  Hang (secs)'], bins=20, 
@@ -457,20 +457,20 @@ def _(df_cleaned, np, plt, sns):
         ax_dist.set_title('Distribution of Dead Hang Performance', fontsize=12, fontweight='bold')
         ax_dist.legend()
         ax_dist.grid(True, alpha=0.3, axis='y')
-        
+
         # 4. Muscle Growth Comparison
         ax_muscle = axes3[1, 1]
         muscle_metrics = ['Left Forearm  Circumference (cm)', 'Right Forearm  Circumference (cm)',
                          'Left Biceps  Circumference (cm)', 'Right Biceps Circumference (cm)']
         start_vals = [df_cleaned[m].iloc[0] for m in muscle_metrics]
         end_vals = [df_cleaned[m].iloc[-1] for m in muscle_metrics]
-        
+
         x_pos = np.arange(len(muscle_metrics))
         width = 0.35
-        
+
         bars1 = ax_muscle.bar(x_pos - width/2, start_vals, width, label='Start', color='#A8DADC')
         bars2 = ax_muscle.bar(x_pos + width/2, end_vals, width, label='Current', color='#457B9D')
-        
+
         ax_muscle.set_xlabel('Muscle Group', fontsize=11)
         ax_muscle.set_ylabel('Circumference (cm)', fontsize=11)
         ax_muscle.set_title('Muscle Size: Start vs Current', fontsize=12, fontweight='bold')
@@ -478,20 +478,20 @@ def _(df_cleaned, np, plt, sns):
         ax_muscle.set_xticklabels(['L Forearm', 'R Forearm', 'L Biceps', 'R Biceps'], fontsize=9)
         ax_muscle.legend()
         ax_muscle.grid(True, alpha=0.3, axis='y')
-        
+
         plt.tight_layout()
         return fig3
-    
+
     fig3 = create_additional_insights()
     fig3
-    return fig3,
+    return
 
 
 @app.cell
 def _(mo):
     mo.md("""
     ---
-    # 🎓 Key Findings Summary
+    # Key Findings Summary
     """)
     return
 
@@ -522,7 +522,7 @@ def _(changes_df, df_cleaned, mo, q1_results, significant_correlations):
 
     ### Statistical Significance
     - Dead hang and pull-ups correlation: **r = {q1_results['correlation']:.3f}** (p = {q1_results['p_value_corr']:.4f})
-    - {"✅ Statistically significant relationship found" if q1_results['p_value_corr'] < 0.05 else "❌ No statistically significant relationship"}
+    - {"Statistically significant relationship found" if q1_results['p_value_corr'] < 0.05 else " No statistically significant relationship"}
 
     ## Body Composition Insights
 

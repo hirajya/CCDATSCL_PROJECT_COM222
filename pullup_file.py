@@ -69,7 +69,7 @@ def _(df_raw, pd):
 def _(mo):
     mo.md("""
     ---
-    # 📊 Dataset Overview & Descriptive Statistics
+    # Dataset Overview & Descriptive Statistics
     """)
     return
 
@@ -167,7 +167,7 @@ def _(mo, q1_results):
     - **P-value (pull-up trend):** {q1_results['p_value_pullup']:.4f}
 
     ### Conclusion
-    {" **REJECT NULL HYPOTHESIS** - Dead-hang training shows statistically significant improvement in pull-up performance (p < 0.05)" if q1_results['p_value_corr'] < 0.05 and q1_results['correlation'] > 0 else "❌ **FAIL TO REJECT NULL HYPOTHESIS** - No statistically significant evidence of improvement"}
+    {" **REJECT NULL HYPOTHESIS** - Dead-hang training shows statistically significant improvement in pull-up performance (p < 0.05)" if q1_results['p_value_corr'] < 0.05 and q1_results['correlation'] > 0 else " **FAIL TO REJECT NULL HYPOTHESIS** - No statistically significant evidence of improvement"}
     """)
     return
 

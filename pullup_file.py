@@ -153,13 +153,13 @@ def _(mo, q1_results):
 
     ### Correlation Analysis
     - **Pearson Correlation** between Dead Hang and Pull-Ups: **r = {q1_results['correlation']:.3f}**
-    - **P-value:** {q1_results['p_value_corr']:.4f}
+    - **P-value:** {q1_results['p_value_corr']:.2e}
     - **Interpretation:** {"Strong positive correlation" if abs(q1_results['correlation']) > 0.7 else "Moderate positive correlation" if abs(q1_results['correlation']) > 0.4 else "Weak correlation"}
 
     ### Trend Analysis
     - **Dead Hang Improvement Rate:** {q1_results['slope']:.3f} seconds per day
     - **R² (Dead Hang):** {q1_results['r_squared']:.3f} ({q1_results['r_squared']*100:.1f}% variance explained)
-    - **P-value (trend):** {q1_results['p_value_trend']:.4f}
+    - **P-value (trend):** {q1_results['p_value_trend']:.2e}
 
     ### Pull-Up Performance
     - **Pull-Up Improvement Rate:** {q1_results['slope_pullup']:.4f} reps per day

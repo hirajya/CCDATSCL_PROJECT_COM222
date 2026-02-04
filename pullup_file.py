@@ -32,7 +32,7 @@ def _(mo):
 @app.cell
 def _(pd):
     # Load the data
-    df_raw = pd.read_csv('data/pullup_logs.csv')
+    df_raw = pd.read_csv('data/weekly_data/week_8.csv')
     df_raw
     return (df_raw,)
 

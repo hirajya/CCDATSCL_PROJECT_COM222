@@ -504,6 +504,12 @@ def _(changes_df, df_cleaned, mo, q1_results, significant_correlations):
     pullup_start = df_cleaned['Maximum  Pull-Ups'].iloc[0]
     pullup_current = df_cleaned['Maximum  Pull-Ups'].iloc[-1]
     pullup_improvement = pullup_current - pullup_start
+    
+    # Calculate total pull-ups achieved
+    total_pullups = df_cleaned['Maximum  Pull-Ups'].sum()
+    
+    # Fix: Get the actual Day_Number value instead of the index
+    first_pullup_day = df_cleaned[df_cleaned['Maximum  Pull-Ups'] > 0]['Day_Number'].iloc[0]
 
     mo.md(f"""
     ## Performance Improvements
@@ -518,7 +524,8 @@ def _(changes_df, df_cleaned, mo, q1_results, significant_correlations):
     - **Initial:** {pullup_start:.0f} reps
     - **Current:** {pullup_current:.0f} reps
     - **Improvement:** +{pullup_improvement:.0f} reps
-    - **First pull-up achieved on day:** {df_cleaned[df_cleaned['Maximum  Pull-Ups'] > 0].index[0] + 1}
+    - **First pull-up achieved on day:** {first_pullup_day}
+    - **Total pull-ups achieved from start:** {total_pullups:.0f} reps
 
     ### Statistical Significance
     - Dead hang and pull-ups correlation: **r = {q1_results['correlation']:.3f}** (p = {q1_results['p_value_corr']:.4f})
@@ -544,6 +551,17 @@ def _(changes_df, df_cleaned, mo, q1_results, significant_correlations):
 def _(df_cleaned):
     # Save cleaned data
     df_cleaned.to_csv('data/pullup_logs_cleaned.csv', index=False)
+    return
+
+
+@app.cell
+def _(df_cleaned):
+    df_cleaned
+    return
+
+
+@app.cell
+def _():
     return
 
 

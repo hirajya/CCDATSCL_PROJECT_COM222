@@ -32,7 +32,7 @@ def _(mo):
 @app.cell
 def _(pd):
     # Load the data
-    df_raw = pd.read_csv('data/weekly_data/week_8.csv')
+    df_raw = pd.read_csv('data/weekly_data/week_9.csv')
     df_raw
     return (df_raw,)
 
@@ -101,6 +101,8 @@ def _(mo):
     **H₀:** Daily dead-hang training does NOT result in statistically significant improvement in pull-up performance.
 
     **H₁:** Daily dead-hang training DOES result in statistically significant improvement in pull-up performance.
+    
+    **Significance Level:** α = 0.05
     """)
     return
 
@@ -261,6 +263,8 @@ def _(mo):
     **H₀:** Changes in body composition or muscle size are NOT significantly associated with improvements in pull-up performance.
 
     **H₁:** Changes in body composition or muscle size ARE significantly associated with improvements in pull-up performance.
+    
+    **Significance Level:** α = 0.05
     """)
     return
 
@@ -504,10 +508,10 @@ def _(changes_df, df_cleaned, mo, q1_results, significant_correlations):
     pullup_start = df_cleaned['Maximum  Pull-Ups'].iloc[0]
     pullup_current = df_cleaned['Maximum  Pull-Ups'].iloc[-1]
     pullup_improvement = pullup_current - pullup_start
-    
+
     # Calculate total pull-ups achieved
     total_pullups = df_cleaned['Maximum  Pull-Ups'].sum()
-    
+
     # Fix: Get the actual Day_Number value instead of the index
     first_pullup_day = df_cleaned[df_cleaned['Maximum  Pull-Ups'] > 0]['Day_Number'].iloc[0]
 
